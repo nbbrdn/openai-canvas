@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "openai-canvas"
+version = "0.1.0"
+description = "Code examples demonstrating the capabilities and techniques of working with the OpenAI API."
+authors = ["Nikolay Bayborodin <nbbrdn@gmail.com>"]
+license = "MIT License"
+readme = "README.md"
+repository = "https://github.com/nbbrdn/openai-canvas"
+packages = [{include = "openai_canvas"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+openai = "^1.23.6"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+pythonista = "openai_canvas.scripts.pythonista:main"
