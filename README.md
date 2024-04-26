@@ -22,3 +22,13 @@ Description:
 
 It's an assistant that could answer user questions, by writing Python code as needed 
 and connecting the internet.
+
+## Development
+1. Install dependencies:
+```
+poetry install
+```
+2. Install pre-commit hook:
+```
+pre-commit install
+```

@@ -1,3 +1,5 @@
 __pycache__/
 logs/
 dist/
+.venv/
+.env
