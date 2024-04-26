@@ -9,3 +9,16 @@ Uninstall:
 ```
 python3 -m pip uninstall openai-canvas
 ```
+
+## Mini Apps
+The project consists of several mini-applications, each of which demonstrates some 
+aspect of working with the OpenAI API. Below, for each such application, the launch 
+command and a brief description are provided.
+
+### pythonista
+Command to run: `pythonista`
+
+Description:
+
+It's an assistant that could answer user questions, by writing Python code as needed 
+and connecting the internet.
