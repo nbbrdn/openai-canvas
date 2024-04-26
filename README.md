@@ -16,7 +16,15 @@ aspect of working with the OpenAI API. Below, for each such application, the lau
 command and a brief description are provided.
 
 ### pythonista
-Command to run: `pythonista`
+Command to run: `pythonista <request>`
+
+For example:
+```
+pythonista "what is x in 1 + 3x = -5"
+```
+```
+pythonista "What's the sunrise and sunset time. Use api.sunrise-sunset.org"
+```
 
 Description:
 
