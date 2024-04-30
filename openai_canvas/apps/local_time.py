@@ -80,9 +80,12 @@ def run_conversation() -> None:
     )
 
     # Conversation loop
-    print("Enter your requset.")
+    print("Enter your requset (or STOP to finish conversation.)")
     while True:
         query: str = input("> ")
+        if query.upper() == "STOP":
+            break
+
         run, thread = create_message_and_run(assistant=assistant, query=query)
         logger.info(run)
 
@@ -112,7 +115,11 @@ def run_conversation() -> None:
                     "Latest message: %s", latest_message.content[0].text.value
                 )
                 print(latest_message.content[0].text.value)
+
                 user_input = input("> ")
+                if user_input.upper() == "STOP":
+                    break
+
                 run, thread = create_message_and_run(
                     assistant=assistant, query=user_input, thread=thread
                 )

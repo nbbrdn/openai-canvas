@@ -31,6 +31,23 @@ Description:
 It's an assistant that could answer user questions, by writing Python code as needed 
 and connecting the internet.
 
+### local-time
+Command to run: `local-time`
+
+Description:
+
+Feel free to interact with this assistant. If you inquire about the time in any city worldwide, the assistant will trigger a designated function. This function retrieves the local date and time from a remote API by providing the UTC offset.
+
+Example:
+```
+$ local-time
+Enter your requset (or STOP to finish conversation.)
+> what time is in Omsk?
+The current local time in Omsk is 18:06.
+> STOP
+$
+```
+
 ## Development
 1. Install dependencies:
 ```
