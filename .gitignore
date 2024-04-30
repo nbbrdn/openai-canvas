@@ -3,3 +3,4 @@ logs/
 dist/
 .venv/
 .env
+*.log
