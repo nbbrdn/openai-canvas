@@ -30,6 +30,8 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 pythonista = "openai_canvas.scripts.pythonista:main"
+order-detail = "openai_canvas.scripts.order_detail:main"
+local-time = "openai_canvas.scripts.local_time:main"
 
 [tool.black]
 line-length = 80
