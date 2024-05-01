@@ -17,6 +17,8 @@ Use the provided functions to answer questions.
 Synthesise answer based on provided function output and be consise.
 """
 
+BASE_API_URL = "https://flow.bayborodin.ru/"
+
 log_file_path = "logs.log"
 logging.basicConfig(
     filename=log_file_path,
@@ -31,7 +33,7 @@ client: openai.Client = openai.OpenAI(api_key=api_key)
 
 # Fetch local time function
 def fetch_local_time(offset: int) -> Union[datetime, str]:
-    url: str = "https://flow.bayborodin.ru/time/"
+    url: str = f"{BASE_API_URL}time/"
     params: Dict[str, Any] = {"offset": offset}
     response = requests.get(url, params=params, timeout=5)
     if response.status_code == 200:
@@ -96,15 +98,22 @@ def run_conversation() -> None:
             logger.info("Run status: %s", run.status)
 
             if run.status == "requires_action":
-                function_name, arguments, function_id = get_function_details(
-                    run
-                )
-                function_response = execute_function_call(
-                    function_name, arguments
-                )
-                run = submit_tool_outputs(
-                    run, thread, function_id, function_response
-                )
+                functions = get_function_details(run)
+                outputs = []
+
+                for func in functions:
+                    output = execute_function_call(
+                        func["name"], func["arguments"]
+                    )
+
+                    outputs.append(
+                        {
+                            "tool_call_id": func["id"],
+                            "output": str(output),
+                        }
+                    )
+
+                run = submit_tool_outputs(run, thread, outputs)
                 continue
 
             if run.status == "completed":
@@ -149,12 +158,15 @@ def create_message_and_run(
 def get_function_details(run: Run):
     logger.info("Requested action: %s", run.required_action)
 
-    called_function = run.required_action.submit_tool_outputs.tool_calls[0]
-    function_name = called_function.function.name
-    arguments = called_function.function.arguments
-    function_id = called_function.id
-
-    return function_name, arguments, function_id
+    tool_calls = run.required_action.submit_tool_outputs.tool_calls
+    return [
+        {
+            "id": tool_call.id,
+            "name": tool_call.function.name,
+            "arguments": tool_call.function.arguments,
+        }
+        for tool_call in tool_calls
+    ]
 
 
 def execute_function_call(
@@ -170,17 +182,11 @@ def execute_function_call(
 def submit_tool_outputs(
     run: Run,
     thread: Thread,
-    function_id: str,
-    function_response: Union[str, datetime],
+    outputs,
 ) -> Run:
     run = client.beta.threads.runs.submit_tool_outputs(
         thread_id=thread.id,
         run_id=run.id,
-        tool_outputs=[
-            {
-                "tool_call_id": function_id,
-                "output": str(function_response),
-            }
-        ],
+        tool_outputs=outputs,
     )
     return run
